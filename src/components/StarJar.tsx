@@ -356,15 +356,21 @@ export function StarJar({ stars, year, onAddStar, onAddPastStar, onEditStar, has
               exit={{ scale: 0.8, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div 
-                className="star-modal-star"
-                style={{
-                  ['--star-color' as string]: getStarColor(selectedStar.id),
-                  ['--star-color-light' as string]: getStarColorLight(selectedStar.id),
-                  ['--star-color-dark' as string]: getStarColorDark(selectedStar.id),
-                }}
-              >
-                <span className="paper-star" />
+              <div className="star-modal-star">
+                <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id={`starGradient-${selectedStar.id}`} x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor={getStarColorLight(selectedStar.id)} />
+                      <stop offset="35%" stopColor={getStarColor(selectedStar.id)} />
+                      <stop offset="100%" stopColor={getStarColorDark(selectedStar.id)} />
+                    </linearGradient>
+                  </defs>
+                  <path 
+                    d="M36 0 L43.92 25.2 L70.56 25.2 L48.96 41.04 L56.88 65.52 L36 50.4 L15.12 65.52 L23.04 41.04 L1.44 25.2 L28.08 25.2 Z"
+                    fill={`url(#starGradient-${selectedStar.id})`}
+                  />
+                  <ellipse cx="32" cy="22" rx="12" ry="8" fill="rgba(255,255,255,0.4)" />
+                </svg>
               </div>
               <p className="star-modal-date">{formatDate(selectedStar.date)}</p>
               
