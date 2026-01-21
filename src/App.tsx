@@ -7,7 +7,10 @@ import { FoldingAnimation } from './components/FoldingAnimation';
 import { StarJar } from './components/StarJar';
 import { YearRecap } from './components/YearRecap';
 import { SharedStar } from './components/SharedStar';
+import { OnboardingPopup } from './components/OnboardingPopup';
 import './App.css';
+
+const ONBOARDING_KEY = 'star-memories-onboarded';
 
 function App() {
   const [jar, setJar] = useState<Jar | null>(null);
@@ -15,11 +18,18 @@ function App() {
   const [showFolding, setShowFolding] = useState(false);
   const [sharedStar, setSharedStar] = useState<MemoryStar | null>(null);
   const [isAddingPastStar, setIsAddingPastStar] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   // Initialize jar and check for shared star URL
   useEffect(() => {
     const currentJar = getOrCreateJar();
     setJar(currentJar);
+
+    // Check if user has seen onboarding
+    const hasOnboarded = localStorage.getItem(ONBOARDING_KEY);
+    if (!hasOnboarded) {
+      setShowOnboarding(true);
+    }
 
     // Check if there's a shared star in the URL
     const params = new URLSearchParams(window.location.search);
@@ -39,6 +49,11 @@ function App() {
       setView('jar');
     }
   }, []);
+
+  const handleOnboardingComplete = () => {
+    localStorage.setItem(ONBOARDING_KEY, 'true');
+    setShowOnboarding(false);
+  };
 
   const handleAddStar = () => {
     setIsAddingPastStar(false);
@@ -132,6 +147,13 @@ function App() {
 
   return (
     <div className="app">
+      {/* Onboarding Popup for first-time users */}
+      <AnimatePresence>
+        {showOnboarding && (
+          <OnboardingPopup onComplete={handleOnboardingComplete} />
+        )}
+      </AnimatePresence>
+
       {/* Folding Animation Overlay */}
       <AnimatePresence>
         {showFolding && (
