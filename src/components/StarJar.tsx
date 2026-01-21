@@ -120,6 +120,7 @@ export function StarJar({ stars, year, onAddStar, onAddPastStar, onEditStar, has
         await navigator.share({
           files: [file],
           title: 'A Memory Star',
+          text: 'A memory star from my jar ✦ Create your own at star-memories.vercel.app',
         });
       } else {
         // Fallback: download the image
