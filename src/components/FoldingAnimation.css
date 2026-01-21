@@ -8,8 +8,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   z-index: 200;
+  background: 
+    radial-gradient(ellipse 80% 60% at 50% 30%, var(--color-peach-soft) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 30% 70%, rgba(184, 228, 212, 0.3) 0%, transparent 45%),
+    var(--color-bg);
 }
 
 .folding-stage {
@@ -19,60 +22,205 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  perspective: 1000px;
 }
 
-.folding-paper {
-  width: 120px;
-  height: 120px;
+/* Stage 0: Paper strip */
+.paper-strip-long {
+  width: 180px;
+  height: 24px;
+  background: linear-gradient(180deg, 
+    #fff 0%, 
+    var(--color-cream) 50%, 
+    var(--color-paper) 100%
+  );
+  border-radius: 4px;
+  border: 2px solid var(--color-paper-dark);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Stage 1: Loop forming */
+.paper-loop-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+}
+
+.paper-loop {
   position: absolute;
-  transform-style: preserve-3d;
+  top: 10px;
+  left: 10px;
+  width: 65px;
+  height: 65px;
+  border: 16px solid transparent;
+  border-top-color: var(--color-cream);
+  border-right-color: var(--color-paper);
+  border-bottom-color: var(--color-paper-dark);
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-.paper-face {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(145deg, #fffef8 0%, #f5f0e1 100%);
-  border-radius: inherit;
+.paper-loop-tail {
+  position: absolute;
+  bottom: 8px;
+  right: 0;
+  width: 45px;
+  height: 14px;
+  background: linear-gradient(90deg, var(--color-paper) 0%, var(--color-cream) 100%);
+  border-radius: 3px;
+  transform: rotate(-20deg);
+  border: 2px solid var(--color-paper-dark);
+}
+
+/* Stage 2: Pentagon knot */
+.pentagon-stage {
+  position: relative;
+  width: 100px;
+  height: 100px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-.paper-lines {
-  width: 80%;
-  height: 60%;
-  background: repeating-linear-gradient(
-    transparent,
-    transparent 8px,
-    #e8e4d9 9px
+.pentagon-knot {
+  width: 70px;
+  height: 70px;
+  background: linear-gradient(145deg, 
+    #fff 0%, 
+    var(--color-cream) 40%, 
+    var(--color-paper) 100%
   );
-  opacity: 0.5;
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
 }
 
-.folded-star {
+.wrap-tail {
   position: absolute;
-  font-size: 80px;
-  color: #ffd700;
-  text-shadow: 
-    0 0 20px rgba(255, 215, 0, 0.6),
-    0 0 40px rgba(255, 215, 0, 0.4),
-    0 0 60px rgba(255, 215, 0, 0.2);
-  z-index: 10;
+  right: 0;
+  width: 35px;
+  height: 12px;
+  background: var(--color-cream);
+  border-radius: 3px;
+  transform-origin: left center;
+  border: 2px solid var(--color-paper-dark);
+}
+
+/* Stage 3: Wrapped pentagon */
+.pentagon-wrapped {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pentagon-complete {
+  width: 75px;
+  height: 75px;
+  background: linear-gradient(145deg, 
+    #fff 0%, 
+    var(--color-cream) 35%, 
+    var(--color-paper) 100%
+  );
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.1));
+}
+
+/* Stage 4: Puffing */
+.puffing-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.puff-shape {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(145deg, 
+    #fff 0%, 
+    var(--color-cream) 35%, 
+    var(--color-paper) 100%
+  );
+  clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+}
+
+/* Stage 5: Final star with pastel color */
+.final-star-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.final-star-3d {
+  width: 85px;
+  height: 85px;
+  filter: drop-shadow(2px 4px 10px rgba(0, 0, 0, 0.12));
+}
+
+.star-3d-shape {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, 
+    #ffd6e0 0%, 
+    #ffc4d4 35%, 
+    #f0a8b8 100%
+  );
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  position: relative;
+}
+
+.star-3d-shape::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(145deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    transparent 50%
+  );
+  clip-path: inherit;
+}
+
+.star-3d-shape::after {
+  content: '';
+  position: absolute;
+  top: 20%;
+  left: 26%;
+  width: 38%;
+  height: 28%;
+  background: radial-gradient(ellipse at center, 
+    rgba(255, 255, 255, 0.7) 0%, 
+    transparent 70%
+  );
+  border-radius: 50%;
 }
 
 .sparkle {
   position: absolute;
-  font-size: 20px;
-  color: #ffd700;
-  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+  font-size: 14px;
+  color: var(--color-peach);
 }
 
 .folding-text {
-  margin-top: 40px;
-  font-family: 'Georgia', serif;
-  font-size: 18px;
-  color: rgba(255, 255, 255, 0.8);
-  font-style: italic;
+  margin-top: 48px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

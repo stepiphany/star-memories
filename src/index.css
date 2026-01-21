@@ -1,3 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Caveat:wght@400;500;600&display=swap');
+
+:root {
+  /* Core palette - soft, dreamy, playful */
+  --color-bg: #f8f6f2;
+  --color-bg-soft: #f0ede6;
+  --color-bg-warm: #faf5ef;
+  --color-cream: #fffcf7;
+  --color-paper: #fef9f3;
+  --color-paper-dark: #ede6dc;
+  
+  /* Accent colors - watercolor inspired */
+  --color-peach: #f8c4a4;
+  --color-peach-soft: #fde4d4;
+  --color-blush: #f4b4b4;
+  --color-sky: #a8d4e8;
+  --color-mint: #b8e4d4;
+  --color-lavender: #d4c4e8;
+  
+  /* Text colors */
+  --color-ink: #3a3632;
+  --color-ink-soft: #6a6460;
+  --color-ink-light: #9a9490;
+  
+  /* UI colors */
+  --text-primary: var(--color-ink);
+  --text-secondary: var(--color-ink-soft);
+  --text-tertiary: var(--color-ink-light);
+  
+  /* Star colors - candy pastels */
+  --star-pink: #ffc4d4;
+  --star-peach: #ffd4b8;
+  --star-yellow: #fff0a8;
+  --star-mint: #b8f0d8;
+  --star-sky: #b8e0f8;
+  --star-lavender: #d8c8f8;
+  --star-rose: #f8c8e0;
+  --star-cream: #f8f4e8;
+  
+  /* Typography - playful & rounded */
+  --font-display: 'Caveat', cursive;
+  --font-body: 'Quicksand', -apple-system, sans-serif;
+  
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 40px;
+  --space-2xl: 64px;
+  
+  /* Transitions */
+  --ease-out-soft: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -9,10 +65,13 @@ html, body {
 }
 
 body {
-  font-family: 'Georgia', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-body);
+  font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #1a1a2e;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  overflow-x: hidden;
 }
 
 #root {
@@ -21,28 +80,34 @@ body {
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: rgba(0, 0, 0, 0.15);
 }
 
 /* Focus styles */
 button:focus-visible {
-  outline: 2px solid #ffd700;
-  outline-offset: 2px;
+  outline: 2px solid var(--color-peach);
+  outline-offset: 3px;
 }
 
 textarea:focus-visible {
   outline: none;
+}
+
+/* Selection color */
+::selection {
+  background: var(--color-peach);
+  color: var(--color-ink);
 }

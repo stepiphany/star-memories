@@ -3,91 +3,90 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
-  padding: 40px 20px;
+  padding: var(--space-xl) var(--space-md);
   position: relative;
   overflow: hidden;
 }
 
 .shared-star-card {
-  background: linear-gradient(145deg, #fffef8 0%, #f5f0e1 100%);
-  border-radius: 24px;
-  padding: 50px 40px;
-  max-width: 420px;
+  background: var(--color-cream);
+  border: 2px solid var(--color-paper-dark);
+  border-radius: 32px;
+  padding: var(--space-2xl) var(--space-xl);
+  max-width: 380px;
   width: 100%;
   text-align: center;
-  box-shadow: 
-    0 20px 60px rgba(0, 0, 0, 0.4),
-    0 0 100px rgba(255, 215, 0, 0.1);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
   position: relative;
   z-index: 10;
 }
 
 .shared-star-icon {
-  font-size: 80px;
-  color: #ffd700;
-  text-shadow: 
-    0 0 30px rgba(255, 215, 0, 0.6),
-    0 0 60px rgba(255, 215, 0, 0.3);
-  margin-bottom: 24px;
+  font-size: 72px;
+  margin-bottom: var(--space-lg);
 }
 
 .shared-star-label {
-  font-family: 'Georgia', serif;
-  font-size: 14px;
-  color: #a89f8c;
-  margin: 0 0 8px 0;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-tertiary);
+  margin: 0 0 var(--space-xs) 0;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.15em;
 }
 
 .shared-star-date {
-  font-family: 'Georgia', serif;
-  font-size: 14px;
-  color: #6b5d4d;
-  font-style: italic;
-  margin: 0 0 24px 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-lg) 0;
 }
 
 .shared-star-content {
-  font-family: 'Georgia', serif;
-  font-size: 22px;
-  color: #3d3428;
-  line-height: 1.6;
-  margin: 0 0 30px 0;
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: 1.4;
+  margin: 0 0 var(--space-xl) 0;
 }
 
 .shared-star-divider {
   font-size: 20px;
-  color: #c9a227;
-  margin-bottom: 30px;
+  color: var(--color-peach);
+  margin-bottom: var(--space-xl);
 }
 
 .shared-star-cta {
-  font-family: 'Georgia', serif;
+  font-family: var(--font-body);
   font-size: 14px;
-  color: #6b5d4d;
-  margin: 0 0 16px 0;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-md) 0;
 }
 
 .btn-create-own {
   padding: 14px 32px;
   border: none;
-  background: linear-gradient(135deg, #c9a227 0%, #dbb940 100%);
-  border-radius: 30px;
-  font-family: 'Georgia', serif;
-  font-size: 16px;
-  color: white;
+  background: linear-gradient(135deg, var(--color-peach) 0%, var(--color-peach-soft) 100%);
+  border-radius: 100px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-ink);
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4);
+  transition: all 0.3s var(--ease-out-soft);
+  box-shadow: 0 6px 20px rgba(248, 196, 164, 0.35);
 }
 
 .btn-create-own:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(201, 162, 39, 0.5);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(248, 196, 164, 0.45);
 }
 
+/* Floating background elements */
 .floating-stars {
   position: absolute;
   top: 0;
@@ -95,10 +94,11 @@
   right: 0;
   bottom: 0;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .floating-star {
   position: absolute;
   font-size: 16px;
-  color: rgba(255, 215, 0, 0.4);
+  opacity: 0.4;
 }

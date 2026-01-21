@@ -1,27 +1,44 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { CalendarPicker } from './CalendarPicker';
 import './PaperSheet.css';
 
 interface PaperSheetProps {
-  onSubmit: (content: string) => void;
+  onSubmit: (content: string, date: string) => void;
   onCancel: () => void;
+  availableDates?: string[]; // Dates without stars
+  initialDate?: string;
 }
 
-export function PaperSheet({ onSubmit, onCancel }: PaperSheetProps) {
+export function PaperSheet({ onSubmit, onCancel, availableDates, initialDate }: PaperSheetProps) {
+  const today = new Date().toISOString().split('T')[0];
   const [content, setContent] = useState('');
-  const today = new Date();
-  const formattedDate = today.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
+  const [selectedDate, setSelectedDate] = useState(initialDate || today);
+
+  const formatDateForDisplay = (dateStr: string) => {
+    const date = new Date(dateStr + 'T00:00:00');
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
 
   const handleSubmit = () => {
     if (content.trim()) {
-      onSubmit(content.trim());
+      onSubmit(content.trim(), selectedDate);
     }
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey && content.trim()) {
+      e.preventDefault();
+      handleSubmit();
+    }
+  };
+
+  // Show date picker if there are available past dates
+  const showDatePicker = availableDates && availableDates.length > 1;
 
   return (
     <motion.div
@@ -32,26 +49,36 @@ export function PaperSheet({ onSubmit, onCancel }: PaperSheetProps) {
     >
       <motion.div
         className="paper-sheet"
-        initial={{ scale: 0.8, rotateX: -15 }}
-        animate={{ scale: 1, rotateX: 0 }}
-        transition={{ type: 'spring', damping: 20 }}
+        initial={{ scaleX: 0.3, opacity: 0 }}
+        animate={{ scaleX: 1, opacity: 1 }}
+        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
       >
         <div className="paper-header">
-          <div className="paper-date">{formattedDate}</div>
-          <div className="paper-decoration">✦</div>
+          {showDatePicker ? (
+            <CalendarPicker
+              selectedDate={selectedDate}
+              availableDates={availableDates}
+              onSelect={setSelectedDate}
+            />
+          ) : (
+            <div className="paper-date">{formatDateForDisplay(selectedDate)}</div>
+          )}
         </div>
         
-        <textarea
-          className="paper-textarea"
-          placeholder="Write a good memory from today..."
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          maxLength={280}
-          autoFocus
-        />
+        <div className="paper-content">
+          <textarea
+            className="paper-textarea"
+            placeholder="Write a good memory..."
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            onKeyDown={handleKeyDown}
+            maxLength={150}
+            autoFocus
+          />
+        </div>
         
         <div className="paper-footer">
-          <span className="char-count">{content.length}/280</span>
+          <span className="char-count">{content.length}/150</span>
           <div className="paper-actions">
             <button className="btn-cancel" onClick={onCancel}>
               Cancel
@@ -61,7 +88,7 @@ export function PaperSheet({ onSubmit, onCancel }: PaperSheetProps) {
               onClick={handleSubmit}
               disabled={!content.trim()}
             >
-              Fold into Star ✦
+              Fold ✦
             </button>
           </div>
         </div>

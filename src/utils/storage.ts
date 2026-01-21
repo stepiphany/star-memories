@@ -34,22 +34,22 @@ export function saveJar(jar: Jar): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(jar));
 }
 
-export function addStar(jar: Jar, content: string): Jar {
-  const today = new Date().toISOString().split('T')[0];
+export function addStar(jar: Jar, content: string, date?: string): Jar {
+  const starDate = date || new Date().toISOString().split('T')[0];
   
-  // Check if there's already a star for today
-  const existingIndex = jar.stars.findIndex(s => s.date === today);
+  // Check if there's already a star for this date
+  const existingIndex = jar.stars.findIndex(s => s.date === starDate);
   
   const newStar: MemoryStar = {
     id: uuidv4(),
-    date: today,
+    date: starDate,
     content,
     createdAt: Date.now(),
   };
   
   let updatedStars: MemoryStar[];
   if (existingIndex >= 0) {
-    // Replace existing star for today
+    // Replace existing star for this date
     updatedStars = [...jar.stars];
     updatedStars[existingIndex] = newStar;
   } else {
@@ -61,6 +61,28 @@ export function addStar(jar: Jar, content: string): Jar {
   return updatedJar;
 }
 
+export function hasStarForDate(jar: Jar, date: string): boolean {
+  return jar.stars.some(s => s.date === date);
+}
+
+export function getAvailablePastDates(jar: Jar): string[] {
+  const today = new Date();
+  const yearStart = new Date(jar.year, 0, 1);
+  const dates: string[] = [];
+  
+  // Get all dates from start of year to today
+  const current = new Date(yearStart);
+  while (current <= today) {
+    const dateStr = current.toISOString().split('T')[0];
+    if (!hasStarForDate(jar, dateStr)) {
+      dates.push(dateStr);
+    }
+    current.setDate(current.getDate() + 1);
+  }
+  
+  return dates;
+}
+
 export function hasStarForToday(jar: Jar): boolean {
   const today = new Date().toISOString().split('T')[0];
   return jar.stars.some(s => s.date === today);
@@ -68,6 +90,18 @@ export function hasStarForToday(jar: Jar): boolean {
 
 export function getStarById(jar: Jar, starId: string): MemoryStar | undefined {
   return jar.stars.find(s => s.id === starId);
+}
+
+export function updateStar(jar: Jar, starId: string, newContent: string): Jar {
+  const updatedStars = jar.stars.map(star => 
+    star.id === starId 
+      ? { ...star, content: newContent }
+      : star
+  );
+  
+  const updatedJar = { ...jar, stars: updatedStars };
+  saveJar(updatedJar);
+  return updatedJar;
 }
 
 function archiveJar(jar: Jar): void {

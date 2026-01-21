@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { MemoryStar } from '../types';
-import { formatDate, getRandomStar } from '../utils/storage';
+import { formatDate } from '../utils/storage';
 import './YearRecap.css';
 
 interface YearRecapProps {
@@ -12,29 +12,12 @@ interface YearRecapProps {
 }
 
 export function YearRecap({ stars, year, onBack, onShareStar }: YearRecapProps) {
-  const [viewMode, setViewMode] = useState<'grid' | 'slideshow' | 'random'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'slideshow'>('grid');
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [randomStar, setRandomStar] = useState<MemoryStar | null>(null);
-  const [isShaking, setIsShaking] = useState(false);
 
   const sortedStars = [...stars].sort((a, b) => 
     new Date(a.date).getTime() - new Date(b.date).getTime()
   );
-
-  const handleShakeJar = useCallback(() => {
-    setIsShaking(true);
-    setTimeout(() => {
-      const jar = { id: '', year, stars, createdAt: 0 };
-      setRandomStar(getRandomStar(jar));
-      setIsShaking(false);
-    }, 600);
-  }, [stars, year]);
-
-  useEffect(() => {
-    if (viewMode === 'random' && !randomStar) {
-      handleShakeJar();
-    }
-  }, [viewMode, randomStar, handleShakeJar]);
 
   // Group stars by month for the grid view
   const starsByMonth = sortedStars.reduce((acc, star) => {
@@ -64,12 +47,6 @@ export function YearRecap({ stars, year, onBack, onShareStar }: YearRecapProps) 
           onClick={() => { setViewMode('slideshow'); setCurrentSlide(0); }}
         >
           Slideshow
-        </button>
-        <button 
-          className={`tab ${viewMode === 'random' ? 'active' : ''}`}
-          onClick={() => { setViewMode('random'); setRandomStar(null); }}
-        >
-          Shake Jar
         </button>
       </div>
 
@@ -154,48 +131,6 @@ export function YearRecap({ stars, year, onBack, onShareStar }: YearRecapProps) 
                 Next →
               </button>
             </div>
-          </div>
-        )}
-
-        {/* Random / Shake Jar View */}
-        {viewMode === 'random' && (
-          <div className="random-view">
-            <motion.div
-              className={`shake-jar ${isShaking ? 'shaking' : ''}`}
-              animate={isShaking ? { 
-                rotate: [0, -10, 10, -10, 10, 0],
-                x: [0, -5, 5, -5, 5, 0]
-              } : {}}
-              transition={{ duration: 0.5 }}
-            >
-              <div className="mini-jar">🫙</div>
-            </motion.div>
-
-            <AnimatePresence mode="wait">
-              {randomStar && !isShaking && (
-                <motion.div
-                  key={randomStar.id}
-                  className="random-star-card"
-                  initial={{ opacity: 0, scale: 0.8, y: 20 }}
-                  animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                >
-                  <div className="random-star-icon">★</div>
-                  <p className="random-date">{formatDate(randomStar.date)}</p>
-                  <p className="random-content">{randomStar.content}</p>
-                  <button 
-                    className="btn-share-random"
-                    onClick={() => onShareStar(randomStar)}
-                  >
-                    Share this memory
-                  </button>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <button className="btn-shake" onClick={handleShakeJar}>
-              Shake for another memory
-            </button>
           </div>
         )}
       </div>

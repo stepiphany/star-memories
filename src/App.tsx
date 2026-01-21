@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import type { Jar, MemoryStar, AppView } from './types';
-import { getOrCreateJar, addStar, hasStarForToday, getStarById } from './utils/storage';
+import { getOrCreateJar, addStar, hasStarForToday, getStarById, getAvailablePastDates, updateStar } from './utils/storage';
 import { PaperSheet } from './components/PaperSheet';
 import { FoldingAnimation } from './components/FoldingAnimation';
 import { StarJar } from './components/StarJar';
@@ -14,6 +14,7 @@ function App() {
   const [view, setView] = useState<AppView>('home');
   const [showFolding, setShowFolding] = useState(false);
   const [sharedStar, setSharedStar] = useState<MemoryStar | null>(null);
+  const [isAddingPastStar, setIsAddingPastStar] = useState(false);
 
   // Initialize jar and check for shared star URL
   useEffect(() => {
@@ -40,17 +41,23 @@ function App() {
   }, []);
 
   const handleAddStar = () => {
+    setIsAddingPastStar(false);
     setView('write');
   };
 
-  const handleSubmitMemory = useCallback((content: string) => {
+  const handleAddPastStar = () => {
+    setIsAddingPastStar(true);
+    setView('write');
+  };
+
+  const handleSubmitMemory = useCallback((content: string, date: string) => {
     setView('home');
     setShowFolding(true);
 
     // After animation, add the star
     setTimeout(() => {
       if (jar) {
-        const updatedJar = addStar(jar, content);
+        const updatedJar = addStar(jar, content, date);
         setJar(updatedJar);
       }
     }, 2000);
@@ -62,6 +69,7 @@ function App() {
   };
 
   const handleCancelWrite = () => {
+    setIsAddingPastStar(false);
     setView('jar');
   };
 
@@ -97,6 +105,13 @@ function App() {
     setView('jar');
   };
 
+  const handleEditStar = useCallback((starId: string, newContent: string) => {
+    if (jar) {
+      const updatedJar = updateStar(jar, starId, newContent);
+      setJar(updatedJar);
+    }
+  }, [jar]);
+
   if (!jar) {
     return (
       <div className="loading">
@@ -105,6 +120,15 @@ function App() {
       </div>
     );
   }
+
+  // Get available past dates (excluding today if already has star)
+  const availablePastDates = getAvailablePastDates(jar);
+  const today = new Date().toISOString().split('T')[0];
+  const hasTodayStar = hasStarForToday(jar);
+  
+  // For "Add Past Memory", exclude today from the list
+  const pastDatesOnly = availablePastDates.filter(d => d !== today);
+  const hasPastDatesAvailable = pastDatesOnly.length > 0;
 
   return (
     <div className="app">
@@ -121,6 +145,8 @@ function App() {
           <PaperSheet
             onSubmit={handleSubmitMemory}
             onCancel={handleCancelWrite}
+            availableDates={isAddingPastStar ? pastDatesOnly : undefined}
+            initialDate={isAddingPastStar ? pastDatesOnly[pastDatesOnly.length - 1] : today}
           />
         )}
       </AnimatePresence>
@@ -133,14 +159,17 @@ function App() {
         />
       )}
 
-      {/* Main Jar View */}
-      {view === 'jar' && (
+      {/* Main Jar View - also show behind write overlay */}
+      {(view === 'jar' || view === 'write') && (
         <StarJar
           stars={jar.stars}
           year={jar.year}
           onAddStar={handleAddStar}
+          onAddPastStar={handleAddPastStar}
           onViewRecap={handleViewRecap}
-          hasStarToday={hasStarForToday(jar)}
+          onEditStar={handleEditStar}
+          hasStarToday={hasTodayStar}
+          hasPastDatesAvailable={hasPastDatesAvailable}
         />
       )}
 

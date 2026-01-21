@@ -4,6 +4,41 @@
 
 .app {
   min-height: 100vh;
+  position: relative;
+}
+
+/* Soft gradient background */
+.app::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 20% 10%, var(--color-peach-soft) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 50% at 80% 20%, rgba(168, 212, 232, 0.3) 0%, transparent 45%),
+    radial-gradient(ellipse 70% 50% at 50% 90%, rgba(184, 228, 212, 0.25) 0%, transparent 45%),
+    radial-gradient(ellipse 50% 40% at 10% 60%, rgba(212, 196, 232, 0.2) 0%, transparent 40%),
+    var(--color-bg);
+  z-index: -1;
+}
+
+/* Decorative shapes */
+.app::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 15% 25%, rgba(248, 196, 164, 0.15) 0%, transparent 8%),
+    radial-gradient(circle at 85% 15%, rgba(168, 212, 232, 0.12) 0%, transparent 6%),
+    radial-gradient(circle at 75% 75%, rgba(184, 228, 212, 0.1) 0%, transparent 7%),
+    radial-gradient(circle at 25% 85%, rgba(212, 196, 232, 0.12) 0%, transparent 5%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .loading {
@@ -12,30 +47,26 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  gap: var(--space-lg);
 }
 
 .loading-star {
-  font-size: 60px;
-  color: #ffd700;
-  animation: pulse 1.5s ease-in-out infinite;
+  font-size: 56px;
+  animation: wiggle 2s ease-in-out infinite;
 }
 
 .loading p {
-  font-family: 'Georgia', serif;
+  font-family: var(--font-body);
   font-size: 16px;
-  color: rgba(255, 255, 255, 0.7);
-  font-style: italic;
-  margin-top: 20px;
+  font-weight: 500;
+  color: var(--text-secondary);
 }
 
-@keyframes pulse {
+@keyframes wiggle {
   0%, 100% {
-    opacity: 0.5;
-    transform: scale(1);
+    transform: rotate(-5deg) scale(1);
   }
   50% {
-    opacity: 1;
-    transform: scale(1.1);
+    transform: rotate(5deg) scale(1.05);
   }
 }
