@@ -1,5 +1,6 @@
-import { useState, useMemo, useCallback } from 'react';
+import { useState, useMemo, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import html2canvas from 'html2canvas';
 import type { MemoryStar } from '../types';
 import { formatDate, getRandomStar } from '../utils/storage';
 import './StarJar.css';
@@ -45,12 +46,13 @@ interface StarJarProps {
 
 export function StarJar({ stars, year, onAddStar, onAddPastStar, onEditStar, hasStarToday, hasPastDatesAvailable }: StarJarProps) {
   const [selectedStar, setSelectedStar] = useState<MemoryStar | null>(null);
-  const [sharingStarId, setSharingStarId] = useState<string | null>(null);
+  const [isSharing, setIsSharing] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editContent, setEditContent] = useState('');
   const [isShaking, setIsShaking] = useState(false);
   const [isFromShake, setIsFromShake] = useState(false);
   const [showAllMemories, setShowAllMemories] = useState(false);
+  const modalRef = useRef<HTMLDivElement>(null);
 
   // Generate positions for stars - they pile up at the bottom like real paper stars
   const starPositions = useMemo(() => {
@@ -93,29 +95,48 @@ export function StarJar({ stars, year, onAddStar, onAddPastStar, onEditStar, has
     return stars.map(star => positions.find(p => p.id === star.id)!);
   }, [stars]);
 
-  const handleShare = async (star: MemoryStar) => {
-    const shareUrl = `${window.location.origin}?star=${star.id}`;
+  const handleShare = async () => {
+    if (!modalRef.current) return;
     
-    if (navigator.share) {
-      try {
+    setIsSharing(true);
+    
+    try {
+      // Capture the modal as an image
+      const canvas = await html2canvas(modalRef.current, {
+        backgroundColor: '#f8f6f2', // Match the cream background
+        scale: 2, // Higher resolution
+        logging: false,
+      });
+      
+      // Convert to blob
+      const blob = await new Promise<Blob>((resolve) => {
+        canvas.toBlob((b) => resolve(b!), 'image/png');
+      });
+      
+      const file = new File([blob], 'memory-star.png', { type: 'image/png' });
+      
+      // Try native share with file
+      if (navigator.share && navigator.canShare?.({ files: [file] })) {
         await navigator.share({
+          files: [file],
           title: 'A Memory Star',
-          text: `"${star.content}" - ${formatDate(star.date)}`,
-          url: shareUrl,
         });
-      } catch (e) {
-        // User cancelled or error
-        copyToClipboard(shareUrl, star.id);
+      } else {
+        // Fallback: download the image
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'memory-star.png';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
       }
-    } else {
-      copyToClipboard(shareUrl, star.id);
+    } catch (e) {
+      console.error('Share failed:', e);
+    } finally {
+      setIsSharing(false);
     }
-  };
-
-  const copyToClipboard = (url: string, starId: string) => {
-    navigator.clipboard.writeText(url);
-    setSharingStarId(starId);
-    setTimeout(() => setSharingStarId(null), 2000);
   };
 
   const handleStartEdit = () => {
@@ -329,6 +350,7 @@ export function StarJar({ stars, year, onAddStar, onAddPastStar, onEditStar, has
           >
             <motion.div
               className="star-modal"
+              ref={modalRef}
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}
@@ -379,9 +401,10 @@ export function StarJar({ stars, year, onAddStar, onAddPastStar, onEditStar, has
                     )}
                     <button 
                       className="btn-share"
-                      onClick={() => handleShare(selectedStar)}
+                      onClick={handleShare}
+                      disabled={isSharing}
                     >
-                      {sharingStarId === selectedStar.id ? 'Link copied!' : 'Share'}
+                      {isSharing ? 'Saving...' : 'Share'}
                     </button>
                     <button 
                       className="btn-close"
