@@ -87,24 +87,6 @@ function App() {
     setView('jar');
   };
 
-
-  const handleShareStar = (star: MemoryStar) => {
-    const shareUrl = `${window.location.origin}${window.location.pathname}?star=${star.id}`;
-    
-    if (navigator.share) {
-      navigator.share({
-        title: 'A Memory Star',
-        text: `"${star.content}"`,
-        url: shareUrl,
-      }).catch(() => {
-        navigator.clipboard.writeText(shareUrl);
-      });
-    } else {
-      navigator.clipboard.writeText(shareUrl);
-      alert('Link copied to clipboard!');
-    }
-  };
-
   const handleCreateOwnFromShared = () => {
     // Clear the shared star URL and go to main jar
     window.history.replaceState({}, '', window.location.pathname);
