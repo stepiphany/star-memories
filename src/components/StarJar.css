@@ -1,0 +1,312 @@
+.star-jar-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #1a1a2e 100%);
+}
+
+.jar-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.jar-header h1 {
+  font-family: 'Georgia', serif;
+  font-size: 32px;
+  color: #fff;
+  margin: 0 0 8px 0;
+  font-weight: normal;
+}
+
+.jar-year {
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.6);
+  font-style: italic;
+  margin: 0;
+}
+
+.jar-wrapper {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.jar {
+  position: relative;
+  width: 280px;
+  height: 380px;
+}
+
+.jar-lid {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 30px;
+  background: linear-gradient(180deg, #8b7355 0%, #6b5344 100%);
+  border-radius: 8px 8px 0 0;
+  box-shadow: 
+    inset 0 2px 4px rgba(255, 255, 255, 0.2),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.jar-lid::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 140px;
+  height: 12px;
+  background: linear-gradient(180deg, #7a644a 0%, #5a4534 100%);
+  border-radius: 0 0 4px 4px;
+}
+
+.jar-body {
+  position: absolute;
+  top: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 240px;
+  height: 300px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.2) 20%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.2) 80%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px 20px 40px 40px;
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 30px rgba(255, 255, 255, 0.1),
+    0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.jar-body::before {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: 30px;
+  height: 80%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  border-radius: 20px;
+}
+
+.jar-stars {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.jar-star {
+  position: absolute;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: #ffd700;
+  cursor: pointer;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  transition: text-shadow 0.2s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.jar-star:hover {
+  text-shadow: 
+    0 0 15px rgba(255, 215, 0, 0.8),
+    0 0 30px rgba(255, 215, 0, 0.5);
+}
+
+.jar-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.jar-empty p {
+  margin: 0;
+  font-family: 'Georgia', serif;
+  font-style: italic;
+}
+
+.jar-empty-hint {
+  font-size: 14px;
+  margin-top: 8px !important;
+}
+
+.jar-base {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 0 0 30px 30px;
+}
+
+.jar-stats {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+  font-family: 'Georgia', serif;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 14px;
+}
+
+.star-count {
+  color: #ffd700;
+}
+
+.jar-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+.btn-add-star {
+  padding: 14px 32px;
+  border: none;
+  background: linear-gradient(135deg, #c9a227 0%, #dbb940 100%);
+  border-radius: 30px;
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 20px rgba(201, 162, 39, 0.4);
+}
+
+.btn-add-star:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(201, 162, 39, 0.5);
+}
+
+.btn-add-star:disabled {
+  background: linear-gradient(135deg, #4a4a4a 0%, #5a5a5a 100%);
+  box-shadow: none;
+  cursor: default;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-recap {
+  padding: 12px 28px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: transparent;
+  border-radius: 30px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-recap:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Star Modal */
+.star-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.star-modal {
+  background: linear-gradient(145deg, #fffef8 0%, #f5f0e1 100%);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+.star-modal-star {
+  font-size: 60px;
+  color: #ffd700;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  margin-bottom: 20px;
+}
+
+.star-modal-date {
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  color: #6b5d4d;
+  font-style: italic;
+  margin: 0 0 20px 0;
+}
+
+.star-modal-content {
+  font-family: 'Georgia', serif;
+  font-size: 20px;
+  color: #3d3428;
+  line-height: 1.6;
+  margin: 0 0 30px 0;
+}
+
+.star-modal-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.btn-share {
+  padding: 12px 24px;
+  border: none;
+  background: linear-gradient(135deg, #c9a227 0%, #dbb940 100%);
+  border-radius: 20px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-share:hover {
+  transform: translateY(-1px);
+}
+
+.btn-close {
+  padding: 10px 20px;
+  border: 1px solid #d4cfc0;
+  background: transparent;
+  border-radius: 20px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  color: #6b5d4d;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+}

@@ -1,0 +1,78 @@
+.folding-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  z-index: 200;
+}
+
+.folding-stage {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.folding-paper {
+  width: 120px;
+  height: 120px;
+  position: absolute;
+  transform-style: preserve-3d;
+}
+
+.paper-face {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(145deg, #fffef8 0%, #f5f0e1 100%);
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.paper-lines {
+  width: 80%;
+  height: 60%;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 8px,
+    #e8e4d9 9px
+  );
+  opacity: 0.5;
+}
+
+.folded-star {
+  position: absolute;
+  font-size: 80px;
+  color: #ffd700;
+  text-shadow: 
+    0 0 20px rgba(255, 215, 0, 0.6),
+    0 0 40px rgba(255, 215, 0, 0.4),
+    0 0 60px rgba(255, 215, 0, 0.2);
+  z-index: 10;
+}
+
+.sparkle {
+  position: absolute;
+  font-size: 20px;
+  color: #ffd700;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+}
+
+.folding-text {
+  margin-top: 40px;
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}

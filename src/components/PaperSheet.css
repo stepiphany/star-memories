@@ -1,0 +1,149 @@
+.paper-sheet-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  padding: 20px;
+}
+
+.paper-sheet {
+  background: linear-gradient(145deg, #fffef8 0%, #f5f0e1 100%);
+  border-radius: 4px;
+  padding: 32px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 10px 40px rgba(0, 0, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.paper-sheet::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    repeating-linear-gradient(
+      transparent,
+      transparent 27px,
+      #e8e4d9 28px
+    );
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.paper-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed #d4cfc0;
+  position: relative;
+  z-index: 1;
+}
+
+.paper-date {
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  color: #6b5d4d;
+  font-style: italic;
+}
+
+.paper-decoration {
+  color: #c9a227;
+  font-size: 20px;
+}
+
+.paper-textarea {
+  width: 100%;
+  min-height: 180px;
+  border: none;
+  background: transparent;
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  line-height: 28px;
+  color: #3d3428;
+  resize: none;
+  outline: none;
+  position: relative;
+  z-index: 1;
+}
+
+.paper-textarea::placeholder {
+  color: #a89f8c;
+  font-style: italic;
+}
+
+.paper-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px dashed #d4cfc0;
+  position: relative;
+  z-index: 1;
+}
+
+.char-count {
+  font-size: 12px;
+  color: #a89f8c;
+}
+
+.paper-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-cancel {
+  padding: 10px 20px;
+  border: 1px solid #d4cfc0;
+  background: transparent;
+  border-radius: 20px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  color: #6b5d4d;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-cancel:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.btn-fold {
+  padding: 10px 24px;
+  border: none;
+  background: linear-gradient(135deg, #c9a227 0%, #dbb940 100%);
+  border-radius: 20px;
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(201, 162, 39, 0.3);
+}
+
+.btn-fold:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(201, 162, 39, 0.4);
+}
+
+.btn-fold:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
