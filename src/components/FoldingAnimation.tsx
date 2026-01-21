@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './FoldingAnimation.css';
 
@@ -8,8 +8,16 @@ interface FoldingAnimationProps {
 
 export function FoldingAnimation({ onComplete }: FoldingAnimationProps) {
   const [stage, setStage] = useState(0);
+  const onCompleteRef = useRef(onComplete);
+  
+  // Keep the ref updated
+  useEffect(() => {
+    onCompleteRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(() => {
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    
     const stages = [
       { delay: 0 },      // 0: Initial strip
       { delay: 1000 },   // 1: Forming loop
@@ -20,12 +28,17 @@ export function FoldingAnimation({ onComplete }: FoldingAnimationProps) {
     ];
     
     stages.forEach(({ delay }, index) => {
-      setTimeout(() => setStage(index), delay);
+      const timer = setTimeout(() => setStage(index), delay);
+      timers.push(timer);
     });
 
-    const timer = setTimeout(onComplete, 6000);
-    return () => clearTimeout(timer);
-  }, [onComplete]);
+    const completeTimer = setTimeout(() => onCompleteRef.current(), 6000);
+    timers.push(completeTimer);
+    
+    return () => {
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  }, []); // Empty dependency array - only run once
 
   return (
     <div className="folding-container">
