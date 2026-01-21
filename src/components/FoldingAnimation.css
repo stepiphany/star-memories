@@ -224,3 +224,23 @@
   align-items: center;
   justify-content: center;
 }
+
+.skip-button {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 8px 20px;
+  border: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.skip-button:hover {
+  color: var(--text-secondary);
+}

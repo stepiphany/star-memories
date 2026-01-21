@@ -223,6 +223,18 @@ export function FoldingAnimation({ onComplete }: FoldingAnimationProps) {
           </motion.span>
         </AnimatePresence>
       </motion.p>
+      
+      {stage < 5 && (
+        <motion.button
+          className="skip-button"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          onClick={() => onCompleteRef.current()}
+        >
+          Skip
+        </motion.button>
+      )}
     </div>
   );
 }
