@@ -253,7 +253,7 @@ export function StarJar({ stars, year, onAddStar, onAddPastStar, onViewRecap, on
               </svg>
             </span>
             <span className="btn-label">
-              {hasStarToday ? "Today's memory ✓" : "Add memory"}
+              {hasStarToday ? "Today's memory ✓" : "Add today's memory"}
             </span>
           </button>
 
