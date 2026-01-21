@@ -50,6 +50,7 @@ export function StarJar({ stars, year, onAddStar, onAddPastStar, onEditStar, has
   const [editContent, setEditContent] = useState('');
   const [isShaking, setIsShaking] = useState(false);
   const [isFromShake, setIsFromShake] = useState(false);
+  const [showAllMemories, setShowAllMemories] = useState(false);
 
   // Generate positions for stars - they pile up at the bottom like real paper stars
   const starPositions = useMemo(() => {
@@ -308,6 +309,11 @@ export function StarJar({ stars, year, onAddStar, onAddPastStar, onEditStar, has
               Add past memory
             </button>
           )}
+          {stars.length > 0 && (
+            <button className="btn-secondary" onClick={() => setShowAllMemories(true)}>
+              View all memories
+            </button>
+          )}
         </div>
       </div>
 
@@ -386,6 +392,70 @@ export function StarJar({ stars, year, onAddStar, onAddPastStar, onEditStar, has
                   </div>
                 </>
               )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* All memories list modal */}
+      <AnimatePresence>
+        {showAllMemories && (
+          <motion.div
+            className="star-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setShowAllMemories(false)}
+          >
+            <motion.div
+              className="memories-list-modal"
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="memories-list-header">
+                <h2>All Memories</h2>
+                <span className="memories-count">{stars.length} {stars.length === 1 ? 'memory' : 'memories'}</span>
+              </div>
+              
+              <div className="memories-list">
+                {[...stars]
+                  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+                  .map((star) => (
+                    <button
+                      key={star.id}
+                      className="memory-list-item"
+                      onClick={() => {
+                        setShowAllMemories(false);
+                        setIsFromShake(false);
+                        setSelectedStar(star);
+                      }}
+                    >
+                      <div 
+                        className="memory-item-star"
+                        style={{
+                          ['--star-color' as string]: getStarColor(star.id),
+                          ['--star-color-light' as string]: getStarColorLight(star.id),
+                          ['--star-color-dark' as string]: getStarColorDark(star.id),
+                        }}
+                      >
+                        <span className="paper-star" />
+                      </div>
+                      <div className="memory-item-content">
+                        <p className="memory-item-date">{formatDate(star.date)}</p>
+                        <p className="memory-item-text">{star.content}</p>
+                      </div>
+                    </button>
+                  ))}
+              </div>
+              
+              <button 
+                className="btn-close-list"
+                onClick={() => setShowAllMemories(false)}
+              >
+                Close
+              </button>
             </motion.div>
           </motion.div>
         )}
