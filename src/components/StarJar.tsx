@@ -38,13 +38,12 @@ interface StarJarProps {
   year: number;
   onAddStar: () => void;
   onAddPastStar: () => void;
-  onViewRecap: () => void;
   onEditStar: (starId: string, newContent: string) => void;
   hasStarToday: boolean;
   hasPastDatesAvailable: boolean;
 }
 
-export function StarJar({ stars, year, onAddStar, onAddPastStar, onViewRecap, onEditStar, hasStarToday, hasPastDatesAvailable }: StarJarProps) {
+export function StarJar({ stars, year, onAddStar, onAddPastStar, onEditStar, hasStarToday, hasPastDatesAvailable }: StarJarProps) {
   const [selectedStar, setSelectedStar] = useState<MemoryStar | null>(null);
   const [sharingStarId, setSharingStarId] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -307,12 +306,6 @@ export function StarJar({ stars, year, onAddStar, onAddPastStar, onViewRecap, on
           {hasPastDatesAvailable && (
             <button className="btn-secondary" onClick={onAddPastStar}>
               Add past memory
-            </button>
-          )}
-          
-          {stars.length > 0 && (
-            <button className="btn-secondary" onClick={onViewRecap}>
-              View all memories
             </button>
           )}
         </div>

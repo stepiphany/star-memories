@@ -5,7 +5,6 @@ import { getOrCreateJar, addStar, hasStarForToday, getStarById, getAvailablePast
 import { PaperSheet } from './components/PaperSheet';
 import { FoldingAnimation } from './components/FoldingAnimation';
 import { StarJar } from './components/StarJar';
-import { YearRecap } from './components/YearRecap';
 import { SharedStar } from './components/SharedStar';
 import { OnboardingPopup } from './components/OnboardingPopup';
 import './App.css';
@@ -88,13 +87,6 @@ function App() {
     setView('jar');
   };
 
-  const handleViewRecap = () => {
-    setView('recap');
-  };
-
-  const handleBackToJar = () => {
-    setView('jar');
-  };
 
   const handleShareStar = (star: MemoryStar) => {
     const shareUrl = `${window.location.origin}${window.location.pathname}?star=${star.id}`;
@@ -188,22 +180,12 @@ function App() {
           year={jar.year}
           onAddStar={handleAddStar}
           onAddPastStar={handleAddPastStar}
-          onViewRecap={handleViewRecap}
           onEditStar={handleEditStar}
           hasStarToday={hasTodayStar}
           hasPastDatesAvailable={hasPastDatesAvailable}
         />
       )}
 
-      {/* Year Recap View */}
-      {view === 'recap' && (
-        <YearRecap
-          stars={jar.stars}
-          year={jar.year}
-          onBack={handleBackToJar}
-          onShareStar={handleShareStar}
-        />
-      )}
     </div>
   );
 }
